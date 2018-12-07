@@ -206,10 +206,6 @@ int main(int argc, char* argv[])
     
     //Delete these files (if they exist) before the program executes.
     
-    remove("ring5_angles.txt");
-    remove("ring6_angles.txt");
-    
-        
     string line="NONE", str1, str2, str3;
     int int1;
     double x , y , z ;
@@ -428,9 +424,6 @@ int main(int argc, char* argv[])
             
             ring_Finder(count_solute, Natoms, Nneigh, My_neigh, ring5_temp, ring6_temp, topSolute ,count_solvent, atom_Pos, boxX, boxY, boxZ, HBOND_DIST,delta_p, delta_h);
             
-            //int count5_temp1 = coplanar_Points(ring5_temp, atom_Pos, time, ring5);
-            
-            
             
             if( ring5_temp.size() > 0 ) coplanar_Points_test(ring5_temp, atom_Pos, time, ring5,THETA);        /*Find the 5-rings which form a plane and get rid of the rest. The planar 5-rings will be written in "ring5_temp" from index 0 to count5_temp1. The non-planar 5-rings will remain in "ring5_temp" from index count5_temp1 to ring5_temp.size(). This will cause some problems later on when removing the duplicate lines. In order to get rid of the problem in removing duplicates from 5-rings, in this part, the planar 5-rings will be copied from index 0 to count5_temp1 to another variable called "ring5". Duplicate lines will be removed from this new variable.*/
             /* I fixed this for both 5 and 6 rings from v.1.14. There is no longer the need to re-write the ring5 and ring6 from ring5_temp or ring6_temp. They will be written correctly in coplanar_Points function. This reduces run time as well. */
@@ -548,9 +541,6 @@ int main(int argc, char* argv[])
     fileIN.close();
     outFile.close();
     if( in_F4 == 1 )outFile_F4.close();
-    
-    remove("ring5_angles.txt");
-    remove("ring6_angles.txt");
     
     
     return 0;

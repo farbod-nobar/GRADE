@@ -47,8 +47,6 @@ int remove_duplicates_map(vector<vector<int>>& cup512);
 
 int remove_duplicates_map_rings(vector<vector<int>>& cups);
 
-void coplanar_Points(vector<vector<int>>& ring , vector<vector<double>>& atoms, string time, vector<vector<int>>& ring5, int THETA);
-
 void coplanar_Points_test(vector<vector<int>>& ring , vector<vector<double>>& atoms, string time, vector<vector<int>>& ring_New, int THETA);
 
 void cup_512_Finder(vector<vector<int>>& ring5,int count_ring5, vector<unsigned long int>& N_ring5_neigh, vector<vector<int>>& My_neigh_ring5, vector<vector<int>>& cup512 );
