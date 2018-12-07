@@ -48,14 +48,10 @@ int main(int argc, char* argv[])
 {
     double const Version=1.00 ;
     
-    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-    
     //output program information.
     cout << std::fixed ;
     cout << std::setprecision(2);
     cout << "\t\t** GRADE - VERSION " << Version << " **\n\n" ;
-    //cout << "\t\t\tv" << Version << "\n\n" ;
-    
     
     string inputFilename ;
     string outputFilename, rawFilename;
@@ -208,23 +204,12 @@ int main(int argc, char* argv[])
     vector<vector<double>> time_vs_F4;                 //This variable holds Time/frame_counter in first column and value of F4 order parameter in second column.
     
     
-    //Delete the files before the program executes. The rest of the info can be appended to it.
+    //Delete these files (if they exist) before the program executes.
     
-    //remove(outputFilename.c_str());     //remove the old ~_summary.txt file, if exists.(use only for debuging)
-    remove("rings5.gro");
-    remove("rings6.gro");
-    remove("My_neigh_ring5.txt");
-    remove("My_neigh_ring6.txt");
-    remove("My_neigh_ring6_ring5.txt");
     remove("ring5_angles.txt");
     remove("ring6_angles.txt");
     
-    remove("methanol.txt");
-    remove("methanol_cage62512-1.gro");
-    remove("methanol_cage512-1.gro");
-    
-    //remove("angles-test.txt");
-    
+        
     string line="NONE", str1, str2, str3;
     int int1;
     double x , y , z ;
@@ -480,9 +465,6 @@ int main(int argc, char* argv[])
                 
             }
             
-            //print_Myneigh(count_ring5, N_ring5_neigh, My_neigh_ring5, count_ring6, N_ring6_neigh, My_neigh_ring6, N_ring6_ring5_neigh, My_neigh_ring6_ring5, time);       //To print more info on atom neighbours, un-comment this line. Not essential to results.
-            
-            
             vector<vector<int>> cup512;
             cup_512_Finder(ring5, count_ring5, N_ring5_neigh, My_neigh_ring5, cup512);
             int count_512_cups = 0;
@@ -567,21 +549,8 @@ int main(int argc, char* argv[])
     outFile.close();
     if( in_F4 == 1 )outFile_F4.close();
     
-    
-    remove("My_neigh_ring5.txt");
-    remove("My_neigh_ring6.txt");
-    remove("My_neigh_ring6_ring5.txt");
     remove("ring5_angles.txt");
     remove("ring6_angles.txt");
-    
-    //remove("cage_62512-cups.txt");
-    //remove("cage_512-rings.txt");
-    //remove("cage_62512-rings.txt");
-    //remove("Rings.txt");
-    
-    std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
-    cout << "Time for function: " << duration << endl;
     
     
     return 0;

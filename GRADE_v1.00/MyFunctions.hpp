@@ -39,8 +39,6 @@ void find_shared_edges_ring6(int count_ring6, vector<vector<int>>& ring6, vector
 
 void find_shared_edges_ring6_ring5(int count_ring6, int count_ring5, vector<vector<int>>& ring5, vector<vector<int>>& ring6, vector<vector<int>>& My_neigh_ring6_ring5, vector<unsigned long int>& N_ring6_ring5_neigh );
 
-void print_Myneigh(int count_ring5, vector<unsigned long int> N_ring5_neigh, vector<vector<int>> My_neigh_ring5, int count_ring6, vector<unsigned long> N_ring6_neigh, vector<vector<int>> My_neigh_ring6, vector<unsigned long int> N_ring6_ring5_neigh, vector<vector<int>> My_neigh_ring6_ring5, string time);
-
 bool  compare(vector<int>& ringA, vector<int>& ringB, int ringA_N, int ringB_N );
 
 bool  compare_adjacant(vector<int>& ringA, vector<int>& ringB, int ringA_N, int ringB_N , vector<int>& base);
