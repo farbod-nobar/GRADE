@@ -461,11 +461,6 @@ int main(int argc, char* argv[])
             
             cout << "ring[6]: " << count_ring6 << "\n";
             
-            
-            //print_Rings(count_ring5, ring5, count_ring6, ring6, time, atom_Pos);   //If you need the 5 and 6 membered rings to be printed to separate files, un-comment this line.
-            
-            
-            
             vector<unsigned long int> N_ring5_neigh;      //Vector of ring-neighbours of all rings.
             
             
