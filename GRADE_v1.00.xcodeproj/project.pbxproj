@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27178A9C21BADE3400BAD4D8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27178A9B21BADE3400BAD4D8 /* main.cpp */; };
+		27178A9C21BADE3400BAD4D8 /* GRADE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27178A9B21BADE3400BAD4D8 /* GRADE.cpp */; };
+		27178AA421BADE8500BAD4D8 /* MyFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27178AA321BADE8500BAD4D8 /* MyFunctions.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +25,9 @@
 
 /* Begin PBXFileReference section */
 		27178A9821BADE3400BAD4D8 /* GRADE_v1.00 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GRADE_v1.00; sourceTree = BUILT_PRODUCTS_DIR; };
-		27178A9B21BADE3400BAD4D8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		27178A9B21BADE3400BAD4D8 /* GRADE.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GRADE.cpp; sourceTree = "<group>"; };
+		27178AA221BADE8400BAD4D8 /* MyFunctions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MyFunctions.hpp; sourceTree = "<group>"; };
+		27178AA321BADE8500BAD4D8 /* MyFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyFunctions.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +60,9 @@
 		27178A9A21BADE3400BAD4D8 /* GRADE_v1.00 */ = {
 			isa = PBXGroup;
 			children = (
-				27178A9B21BADE3400BAD4D8 /* main.cpp */,
+				27178A9B21BADE3400BAD4D8 /* GRADE.cpp */,
+				27178AA321BADE8500BAD4D8 /* MyFunctions.cpp */,
+				27178AA221BADE8400BAD4D8 /* MyFunctions.hpp */,
 			);
 			path = GRADE_v1.00;
 			sourceTree = "<group>";
@@ -118,7 +123,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27178A9C21BADE3400BAD4D8 /* main.cpp in Sources */,
+				27178A9C21BADE3400BAD4D8 /* GRADE.cpp in Sources */,
+				27178AA421BADE8500BAD4D8 /* MyFunctions.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
