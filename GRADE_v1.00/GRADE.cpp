@@ -204,7 +204,6 @@ int main(int argc, char* argv[])
     vector<vector<double>> time_vs_F4;                 //This variable holds Time/frame_counter in first column and value of F4 order parameter in second column.
     
     
-    //Delete these files (if they exist) before the program executes.
     
     string line="NONE", str1, str2, str3;
     int int1;
@@ -216,7 +215,6 @@ int main(int argc, char* argv[])
     int firstSOL=0;
     int frameCounter=0;
     int topSolute =0;
-    //int bottomSolute =0;
     size_t methane_512 = 0, methane_62512 = 0;
     string time;
     Natoms=0;
@@ -233,6 +231,7 @@ int main(int argc, char* argv[])
     remove(temp1.c_str());
     remove(temp2.c_str());
     
+    //Create the header for outputfile.
     outFile.open(outputFilename, ofstream::app);
     outFile << "#Frame/Time(ps)\t\tcage\tfilled_cage\tcage\t\tfilled_cage" << endl ;
     outFile << "#\t\t\t5¹²\t5¹²\t\t6²5¹²\t\t6²5¹²" << endl ;
@@ -253,6 +252,7 @@ int main(int argc, char* argv[])
         outFile_F4 << "#Frame\tF4\t\tTime(ps)" << endl;
     }
     
+    //Start reading the input file.
     while (!fileIN.eof())
     {
         getline(fileIN, line);
@@ -265,10 +265,8 @@ int main(int argc, char* argv[])
             streamA >> Natoms ;
         }
         size_t found =0;
-        //if( line.find("Generated") ) {found = line.find("Generated");}
         size_t found_time=0;
         if( line.find("t=") ) {found_time = line.find("t=");}
-        //if (found != string::npos)      //If "Generated" is in line, then do the following.
         if (lineNumber == 1 || (lineNumber == (1 + 3*frameCounter + frameCounter*Natoms) && !fileIN.eof()) )        //This is to find the first line of gro file.
         {
             frameCounter++;
@@ -398,11 +396,11 @@ int main(int argc, char* argv[])
             }
             
             getline(fileIN, line);      //get the box size from last line of frame
+            //End of reading each frame.
             
             string box_size_xyz;
             box_size_xyz = line;
             lineNumber++;
-            
             
             istringstream streamB(line);
             streamB >> boxX >> boxY >> boxZ ;
@@ -410,11 +408,12 @@ int main(int argc, char* argv[])
             if(frameCounter == 1 )
             {
                 topSolute = firstSOL - 3;
-                //bottomSolute = Natoms - topSolute - count_solvent ;
                 cout << "solute1: " << solute1 << " " << topSolute << " molecules " ;
                 if(strcmp(solute1.c_str(), solute2.c_str()) != 0) cout << ", solute2: " << solute2 << " " << count_solute2 <<" molecules\n";
                 else cout << "\n" ;
             }
+
+            //Start of calculations for each frame
             
             calc_Distance(count_solvent, count_solute, My_neigh, atom_Pos, boxX, boxY, boxZ, Nneigh, Natoms, topSolute, time, HBOND_DIST);
             
@@ -425,8 +424,7 @@ int main(int argc, char* argv[])
             ring_Finder(count_solute, Natoms, Nneigh, My_neigh, ring5_temp, ring6_temp, topSolute ,count_solvent, atom_Pos, boxX, boxY, boxZ, HBOND_DIST,delta_p, delta_h);
             
             
-            if( ring5_temp.size() > 0 ) coplanar_Points_test(ring5_temp, atom_Pos, time, ring5,THETA);        /*Find the 5-rings which form a plane and get rid of the rest. The planar 5-rings will be written in "ring5_temp" from index 0 to count5_temp1. The non-planar 5-rings will remain in "ring5_temp" from index count5_temp1 to ring5_temp.size(). This will cause some problems later on when removing the duplicate lines. In order to get rid of the problem in removing duplicates from 5-rings, in this part, the planar 5-rings will be copied from index 0 to count5_temp1 to another variable called "ring5". Duplicate lines will be removed from this new variable.*/
-            /* I fixed this for both 5 and 6 rings from v.1.14. There is no longer the need to re-write the ring5 and ring6 from ring5_temp or ring6_temp. They will be written correctly in coplanar_Points function. This reduces run time as well. */
+            if( ring5_temp.size() > 0 ) coplanar_Points_test(ring5_temp, atom_Pos, time, ring5,THETA);        //Find the 5-rings which form a plane and get rid of the rest.
             
             int count_ring5 = remove_duplicates_map_rings(ring5);     //Remove duplicate lines from 5-rings.
             
@@ -446,15 +444,11 @@ int main(int argc, char* argv[])
             
             vector<unsigned long int> N_ring6_neigh;
             
-            //Removed 'find_shared_edges_ring6' function in v1.17 since it's output is not useful.
-            //find_shared_edges_ring6(count_ring6, ring6, My_neigh_ring6, N_ring6_neigh);
-            
             vector<unsigned long int> N_ring6_ring5_neigh;
             find_shared_edges_ring6_ring5(count_ring6, count_ring5, ring5, ring6, My_neigh_ring6_ring5, N_ring6_ring5_neigh);
             
             
             if (count_ring5 == 0 && count_ring6 == 0 ){cout << "\n**NO RINGS FOUND!**\n\n" ;
-                //return 0;
                 
             }
             
@@ -488,9 +482,6 @@ int main(int argc, char* argv[])
                 cage_512_count = remove_duplicates_map(cage_512_rings);
                 
                 //Write output gro file only if frameCounter is a multiple of DT. if -dt is not provided, every frame will be written.
-                
-                //if(cage_512_count>0  && (frameCounter % DT == 0))print_vmd_cage_fcups(cup512, cage_512, cage_512_count, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_512, solute1, topSolute, solute2, count_solute2, frameCounter);
-                
                 if(cage_512_count>0  && (frameCounter % DT == 0))print_vmd_cage_frings_test(cup512, cage_512, cage_512_count, cage_512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_512, solute1, topSolute, solute2, count_solute2, frameCounter);
                 
             }
@@ -505,19 +496,13 @@ int main(int argc, char* argv[])
                 cage_62512_count = remove_duplicates_map(cage_62512_rings);
                 
                 //Write output gro file only if frameCounter is a multiple of DT. if -dt is not provided, every frame will be written.
-                
-                //if(cage_62512_count>0 && (frameCounter % DT) == 0)print_vmd_cage_fcups(cup62512, cage_62512, cage_62512_count, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes,methane_62512, solute1, topSolute, solute2, count_solute2, frameCounter);
-                
                 if(cage_62512_count>0 && (frameCounter % DT) == 0)print_vmd_cage_frings_test(cup62512, cage_62512, cage_62512_count, cage_62512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_62512, solute1, topSolute, solute2, count_solute2, frameCounter);
             }
             cout << "# 6²5¹²\tcage: " << cage_62512_count << "\n\n";
             
             outFile << cage_512_count << "\t" << methane_512 << "\t\t" << cage_62512_count << "\t\t" << methane_62512 << endl ;
-            
-            
-            
-            
-            if(in_F4 == 1)
+
+            if(in_F4 == 1)      //If F4 flag is provided, calculate F4.
             {
                 remove("F4.xvg");
                 F4_value = calc_F4(count_solvent, count_solute, My_neigh, atom_Pos, boxX, boxY, boxZ, Nneigh, Natoms, topSolute, time, HBOND_DIST) ;
@@ -537,11 +522,13 @@ int main(int argc, char* argv[])
             
             
         }
-    }
+    }   //End of reading the input file.
+    
+    
     fileIN.close();
     outFile.close();
-    if( in_F4 == 1 )outFile_F4.close();
     
+    if( in_F4 == 1 )outFile_F4.close();
     
     return 0;
     
