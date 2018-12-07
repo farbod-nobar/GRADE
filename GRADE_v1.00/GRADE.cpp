@@ -507,16 +507,8 @@ int main(int argc, char* argv[])
                 remove("F4.xvg");
                 F4_value = calc_F4(count_solvent, count_solute, My_neigh, atom_Pos, boxX, boxY, boxZ, Nneigh, Natoms, topSolute, time, HBOND_DIST) ;
                 if(F4_value > 0) outFile_F4 << frameCounter << "\t " << F4_value << "\t" << time << endl;
-                else outFile_F4 << frameCounter << "\t" << F4_value << "\t" << time << endl;        //The if-else condition takes card of the extra space needed for "-" sign and alligns the output.
+                else outFile_F4 << frameCounter << "\t" << F4_value << "\t" << time << endl;        //The if-else condition takes card of the extra space needed for "-" sign and alligns the output(lazy way!).
                 
-                
-                
-                //If you need to do more operations on F4 value of each frame, un-comment following lines.
-                //                current_F4_line.push_back(frameCounter);
-                //                current_F4_line.push_back(F4_value);
-                //                time_vs_F4.push_back(current_F4_line);
-                
-                //cout << "F4= " << F4_value << " " << time << " " << frameCounter << endl;
             }
             
             
