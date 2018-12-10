@@ -47,7 +47,7 @@ int remove_duplicates_map(vector<vector<int>>& cup512);
 
 int remove_duplicates_map_rings(vector<vector<int>>& cups);
 
-void coplanar_Points_test(vector<vector<int>>& ring , vector<vector<double>>& atoms, string time, vector<vector<int>>& ring_New, int THETA);
+void coplanar_Points(vector<vector<int>>& ring , vector<vector<double>>& atoms, string time, vector<vector<int>>& ring_New, int THETA);
 
 void cup_512_Finder(vector<vector<int>>& ring5,int count_ring5, vector<unsigned long int>& N_ring5_neigh, vector<vector<int>>& My_neigh_ring5, vector<vector<int>>& cup512 );
 
@@ -55,7 +55,7 @@ void cup_62512_Finder(vector<vector<int>>& ring6, int count_ring6, vector<vector
 
 int cage_Finder(vector<vector<int>> cups, unsigned long count_cups, vector<vector<int>>& neighour_rings, vector<vector<int>>& cage, vector<vector<int>>& cage_rings, string time);
 
-void print_vmd_cage_frings_test(vector<vector<int>> cups, vector<vector<int>> cages, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter);
+void print_vmd_cage_frings(vector<vector<int>> cups, vector<vector<int>> cages, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter);
 
 double calc_F4(int count_solvent, int count_solute, vector<vector<int>>& My_neigh, vector<vector<double>>& atom_Pos, double& boxX, double& boxY, double& boxZ, vector<int>& Nneigh, int Natoms, int topSolute, string time, double HBOND_DIST );
 

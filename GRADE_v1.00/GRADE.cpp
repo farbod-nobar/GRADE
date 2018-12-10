@@ -424,13 +424,13 @@ int main(int argc, char* argv[])
             ring_Finder(count_solute, Natoms, Nneigh, My_neigh, ring5_temp, ring6_temp, topSolute ,count_solvent, atom_Pos, boxX, boxY, boxZ, HBOND_DIST,delta_p, delta_h);
             
             
-            if( ring5_temp.size() > 0 ) coplanar_Points_test(ring5_temp, atom_Pos, time, ring5,THETA);        //Find the 5-rings which form a plane and get rid of the rest.
+            if( ring5_temp.size() > 0 ) coplanar_Points(ring5_temp, atom_Pos, time, ring5,THETA);        //Find the 5-rings which form a plane and get rid of the rest.
             
             int count_ring5 = remove_duplicates_map_rings(ring5);     //Remove duplicate lines from 5-rings.
             
             cout << "ring[5]: " << count_ring5 << "\n";
             
-            if( ring6_temp.size() > 0 )coplanar_Points_test(ring6_temp, atom_Pos, time, ring6, THETA);
+            if( ring6_temp.size() > 0 )coplanar_Points(ring6_temp, atom_Pos, time, ring6, THETA);
             
             
             int count_ring6 = remove_duplicates_map_rings(ring6);
@@ -482,7 +482,7 @@ int main(int argc, char* argv[])
                 cage_512_count = remove_duplicates_map(cage_512_rings);
                 
                 //Write output gro file only if frameCounter is a multiple of DT. if -dt is not provided, every frame will be written.
-                if(cage_512_count>0  && (frameCounter % DT == 0))print_vmd_cage_frings_test(cup512, cage_512, cage_512_count, cage_512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_512, solute1, topSolute, solute2, count_solute2, frameCounter);
+                if(cage_512_count>0  && (frameCounter % DT == 0))print_vmd_cage_frings(cup512, cage_512, cage_512_count, cage_512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_512, solute1, topSolute, solute2, count_solute2, frameCounter);
                 
             }
             
@@ -496,7 +496,7 @@ int main(int argc, char* argv[])
                 cage_62512_count = remove_duplicates_map(cage_62512_rings);
                 
                 //Write output gro file only if frameCounter is a multiple of DT. if -dt is not provided, every frame will be written.
-                if(cage_62512_count>0 && (frameCounter % DT) == 0)print_vmd_cage_frings_test(cup62512, cage_62512, cage_62512_count, cage_62512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_62512, solute1, topSolute, solute2, count_solute2, frameCounter);
+                if(cage_62512_count>0 && (frameCounter % DT) == 0)print_vmd_cage_frings(cup62512, cage_62512, cage_62512_count, cage_62512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_62512, solute1, topSolute, solute2, count_solute2, frameCounter);
             }
             cout << "# 6²5¹²\tcage: " << cage_62512_count << "\n\n";
             

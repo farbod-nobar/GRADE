@@ -796,7 +796,7 @@ int remove_duplicates_map_rings(vector<vector<int>>& cups)
 //To print the debugging output files, un-comment lines including "outFile".
 
 //START OF NEW COPLANAR FUNCTION
-void coplanar_Points_test(vector<vector<int>>& ring , vector<vector<double>>& atoms, string time, vector<vector<int>>& ring_New, int THETA)
+void coplanar_Points(vector<vector<int>>& ring , vector<vector<double>>& atoms, string time, vector<vector<int>>& ring_New, int THETA)
 {
 #include <math.h>
     
@@ -1460,7 +1460,7 @@ int cage_Finder(vector<vector<int>> cups, unsigned long count_cups, vector<vecto
 // New Function--------------------------------------------------------------------------------------
 // New Function--------------------------------------------------------------------------------------
 
-void print_vmd_cage_frings_test(vector<vector<int>> cups, vector<vector<int>> cages, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter)
+void print_vmd_cage_frings(vector<vector<int>> cups, vector<vector<int>> cages, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter)
 
 {
     
