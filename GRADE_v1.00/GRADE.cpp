@@ -248,6 +248,7 @@ int main(int argc, char* argv[])
     ofstream outFile_F4;
     if(in_F4 == 1)                          //If F4 flag option is on, open a file for F4 as a function of time.
     {
+        remove("F4.xvg");       //Remove any existing F4.xvg file and create a new one. 
         outFile_F4.open("F4.xvg", ofstream::app);
         outFile_F4 << "#Frame\tF4\t\tTime(ps)" << endl;
     }
@@ -504,7 +505,6 @@ int main(int argc, char* argv[])
 
             if(in_F4 == 1)      //If F4 flag is provided, calculate F4.
             {
-                remove("F4.xvg");
                 F4_value = calc_F4(count_solvent, count_solute, My_neigh, atom_Pos, boxX, boxY, boxZ, Nneigh, Natoms, topSolute, time, HBOND_DIST) ;
                 if(F4_value > 0) outFile_F4 << frameCounter << "\t " << F4_value << "\t" << time << endl;
                 else outFile_F4 << frameCounter << "\t" << F4_value << "\t" << time << endl;        //The if-else condition takes card of the extra space needed for "-" sign and alligns the output(lazy way!).
