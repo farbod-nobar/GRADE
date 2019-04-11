@@ -40,7 +40,6 @@
 #include "MyFunctions.hpp"
 
 using namespace std;
-using namespace std::chrono;
 
 
 // Main function ----------------------------------------------------------------------------------------------------------------
@@ -51,12 +50,12 @@ int main(int argc, char* argv[])
     //output program information.
     cout << std::fixed ;
     cout << std::setprecision(2);
-    cout << "\t\t** GRADE - VERSION " << Version << " **\n\n" ;
+    cout << "\n\n\t\t** GRADE - VERSION " << Version << " **\n\n" ;
     
-    string inputFilename ;
+    string inputFilename, s1, s2 ;
     string outputFilename, rawFilename;
     int DT=1, FR=1, THETA=45;
-    int in_theta=0, in_fr=0, in_dt=0, in_r=0, in_F4=0, in_d1=0, in_d2=0;         //This parameter is for whether theta is given as input parameter (1) or taken as default value (0).
+    int in_theta=0, in_fr=0, in_dt=0, in_r=0, in_F4=0, in_d1=0, in_d2=0, in_s1=0, in_s2=0;         //This parameter is for whether theta is given as input parameter (1) or taken as default value (0).
     double HBOND_DIST = 0.35;   //Command line input parameter for Hbond_distance cutoff, taken from '-r' flag.
     double delta_p = 0.18, delta_h = 0.26;   //Command line input parameter for delta constraints for pentagon and hexagons.
     string F4 = "no";
@@ -122,6 +121,17 @@ int main(int argc, char* argv[])
                 {
                     delta_h = atof(argv[argi]);
                     in_d2 = 1 ;
+                }
+                
+                else if (strcmp(args, "-s1") == 0)
+                {
+                    s1 = argv[argi];
+                    in_s1 = 1 ;
+                }
+                else if (strcmp(args, "-s2") == 0)
+                {
+                    s2 = argv[argi];
+                    in_s2 = 1 ;
                 }
                 
                 else cout << "Skipped unknown option(s): '" << args << " " <<argv[argi] << "'" << "\n\n";
@@ -218,7 +228,8 @@ int main(int argc, char* argv[])
     size_t methane_512 = 0, methane_62512 = 0;
     string time;
     Natoms=0;
-    string solute1="AAA", solute2="BBB";
+    string solute1="AAA";
+    string solute2="BBB";
     
     
     ofstream outFile;
@@ -409,9 +420,20 @@ int main(int argc, char* argv[])
             if(frameCounter == 1 )
             {
                 topSolute = firstSOL - 3;
-                cout << "solute1: " << solute1 << " " << topSolute << " molecules " ;
-                if(strcmp(solute1.c_str(), solute2.c_str()) != 0) cout << ", solute2: " << solute2 << " " << count_solute2 <<" molecules\n";
-                else cout << "\n" ;
+                if(in_s1 == 0){cout << "solute1: " << solute1 << " " << topSolute << " molecules " ;}
+                else {cout << "solute1: " << s1 << " " << topSolute << " molecules " ;}
+                //if( (in_s1==0 && in_s2==1) || (in_s1==1 && in_s2==1) || (in_s1==0 && in_s2==0))
+                {
+                    
+                    if(strcmp(solute1.c_str(), solute2.c_str()) != 0)
+                    {
+                       if(in_s2==0) cout << ", solute2: " << solute2 << " " << count_solute2 <<" molecules\n";
+                        else cout << ", solute2: " << s2 << " " << count_solute2 <<" molecules\n";
+                    }
+                    else cout << "\n" ;
+                    
+                }
+                
             }
 
             //Start of calculations for each frame

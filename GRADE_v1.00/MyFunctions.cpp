@@ -2041,7 +2041,7 @@ double calc_F4(int count_solvent, int count_solute, vector<vector<int>>& My_neig
         }
     }
     
-    cout << "phi_avg= " << phi_avg/count_solvent << "\n\n";
+    //cout << "phi_avg= " << phi_avg/count_solvent << "\n\n";
     return phi_avg/count_solvent;
 }
 
