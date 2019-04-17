@@ -146,9 +146,22 @@ int main(int argc, char* argv[])
         cout << "GRADE is written by:\n" ;
         cout << "Farbod Mahmoudinobar and Cristiano L. Dias\n\n" ;
         cout << "© Copyright 2018, New Jersey Institute of Technology, USA.\n\n" ;
-        cout << "GRADE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n " ;
+        cout << "GRADE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n" ;
         
-        cout << "Usage: " << argv[0] << "\n" << "\nOptions to specify input files:\n" ;
+        cout << "Usage:\n" << "GRADE\t" << "[-i [<.gro>]] [-theta <int>] [-r <real>] [-d1 <real>] [-d2 <real>]\n" ;
+        cout << "\t\t[-o [<.gro/.xvg>]] [-dt <int>] [-fr <int>] [-[no]f4] [-s1 <string>]\n" ;
+        cout << "\t\t[-s2 <string>]\n" ;
+        
+        cout << "\nDESCRIPTION\n";
+        cout <<
+        "GRADE identifies cages in clathrate hydrate structures given the atomic coordinates\n"
+        "of oxygen atoms of water molecules. It finds the solute molecules trapped inside\n"
+        "cages and computes the four-body order parameter F4 commonly used to identify different\n"
+        "phases of water.\n";
+        
+        cout << "\nOPTIONS\n";
+        cout << "\nOptions to specify input files:\n" ;
+
         cout << " -i\t[<.gro>]\t(input)\n\tTrajectory in gro format\n" ;
         cout << "-theta\t<int>\t(45)\t(degree)\n\tAngle cut-off for planarity constraint\n" ;
         cout << "-r\t<real>\t(0.35)\t(nm)\n\tHydrogen bond cutoff radius (nm, Oxygen-Oxygen)\n" ;
@@ -160,8 +173,13 @@ int main(int argc, char* argv[])
         cout << "-dt\t<int>\t(1)\t(Opt.)\n\tRead all input file, write output gro files every dt frame\n";
         cout << "-fr\t<int>\t(1)\t(Opt.)\n\tRead input file every fr frame\n";
         cout << "-[no]f4\t(yes)\t(F4.xvg)\n\tCompute four-body order parameter F4=< cos3𝝓 >\n" ;
-        
+        cout << "-s1\t<string>\t(Opt.)\n\tSet the name of first solute molecules in the input file.\n";
+        cout << "-s2\t<string>\t(Opt.)\n\tSet the name of second solute molecules in the input file.\n";
+
         cout << "\n" ;
+        
+        cout << "**No Input Provided!**" << "\n\n";
+
         return 0 ;
     }
     else
@@ -169,9 +187,22 @@ int main(int argc, char* argv[])
         cout << "GRADE is written by:\n" ;
         cout << "Farbod Mahmoudinobar and Cristiano L. Dias\n\n" ;
         cout << "© Copyright 2018, New Jersey Institute of Technology, USA.\n\n" ;
-        cout << "GRADE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n " ;
+        cout << "GRADE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n" ;
         
-        cout << "Usage: " << argv[0] << "\n" << "\nOptions to specify input files:\n" ;
+        cout << "Usage:\n" << "GRADE\t" << "[-i [<.gro>]] [-theta <int>] [-r <real>] [-d1 <real>] [-d2 <real>]\n" ;
+        cout << "\t\t[-o [<.gro/.xvg>]] [-dt <int>] [-fr <int>] [-[no]f4] [-s1 <string>]\n" ;
+        cout << "\t\t[-s2 <string>]\n" ;
+        
+        cout << "\nDESCRIPTION\n";
+        cout <<
+        "GRADE identifies cages in clathrate hydrate structures given the atomic coordinates\n"
+        "of oxygen atoms of water molecules. It finds the solute molecules trapped inside\n"
+        "cages and computes the four-body order parameter F4 commonly used to identify different\n"
+        "phases of water.\n";
+        
+        cout << "\nOPTIONS\n";
+        cout << "\nOptions to specify input files:\n" ;
+
         cout << " -i\t[<.gro>]\t(input)\n\tTrajectory in gro format\n" ;
         cout << "-theta\t<int>\t(45)\t(degree)\n\tAngle cut-off for planarity constraint\n" ;
         cout << "-r\t<real>\t(0.35)\t(nm)\n\tHydrogen bond cutoff radius (nm, Oxygen-Oxygen)\n" ;
@@ -183,7 +214,8 @@ int main(int argc, char* argv[])
         cout << "-dt\t<int>\t(1)\t(Opt.)\n\tRead all input file, write output gro files every dt frame\n";
         cout << "-fr\t<int>\t(1)\t(Opt.)\n\tRead input file every fr frame\n";
         cout << "-[no]f4\t(yes)\t(F4.xvg)\n\tCompute four-body order parameter F4=< cos3𝝓 >\n" ;
-        
+        cout << "-s1\t<string>\t(Opt.)\n\tSet the name of first solute molecules in the input file.\n";
+        cout << "-s2\t<string>\t(Opt.)\n\tSet the name of second solute molecules in the input file.\n";
         
         cout << "\n" ;
     }
@@ -201,6 +233,8 @@ int main(int argc, char* argv[])
     if (in_F4 == 1) {cout << " -f4 " << "YES" ;}
     if (in_d1 == 1) {cout << " -d1 " << delta_p ;}
     if (in_d2 == 1) {cout << " -d2 " << delta_h ;}
+    if (in_s1 == 1) {cout << " -s1 " << s1 ;}
+    if (in_s2 == 1) {cout << " -s1 " << s2 ;}
     
     cout << "\n\n" ;
     //-------------------------------------------------------------------------------------
@@ -236,7 +270,7 @@ int main(int argc, char* argv[])
     size_t found_ext = outputFilename.find_last_of(".");
     rawFilename = outputFilename.substr(0,found_ext);
     outputFilename = rawFilename + ".xvg";
-    string temp1, temp2;
+    string temp1, temp2, solute1_atom_finder, solute2_atom_finder;
     temp1 = rawFilename + "_cage62512.gro" ;
     temp2 = rawFilename + "_cage512.gro" ;
     remove(temp1.c_str());
@@ -349,7 +383,6 @@ int main(int argc, char* argv[])
                         solute1 = solute1.substr(0, found_space);
                     }
                     
-                    
                     if(line.substr(5,7) != solute1)
                     {
                         
@@ -420,15 +453,15 @@ int main(int argc, char* argv[])
             if(frameCounter == 1 )
             {
                 topSolute = firstSOL - 3;
-                if(in_s1 == 0){cout << "solute1: " << solute1 << " " << topSolute << " molecules " ;}
-                else {cout << "solute1: " << s1 << " " << topSolute << " molecules " ;}
+                if(in_s1 == 0){cout << "solute1: " << solute1 << " " << topSolute << " atoms " ;}
+                else {cout << "solute1: " << s1 << " " << topSolute << " atoms " ;}
                 //if( (in_s1==0 && in_s2==1) || (in_s1==1 && in_s2==1) || (in_s1==0 && in_s2==0))
                 {
                     
                     if(strcmp(solute1.c_str(), solute2.c_str()) != 0)
                     {
-                       if(in_s2==0) cout << ", solute2: " << solute2 << " " << count_solute2 <<" molecules\n";
-                        else cout << ", solute2: " << s2 << " " << count_solute2 <<" molecules\n";
+                       if(in_s2==0) cout << ", solute2: " << solute2 << " " << count_solute2-topSolute <<" atoms\n";
+                        else cout << ", solute2: " << s2 << " " << count_solute2-topSolute <<" atoms\n";
                     }
                     else cout << "\n" ;
                     

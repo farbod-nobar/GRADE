@@ -1787,7 +1787,7 @@ void print_vmd_cage_frings(vector<vector<int>> cups, vector<vector<int>> cages, 
                     temp_meth_number_holder.push_back(j);
                     
                     outFile << setprecision(3);
-                    outFile << setw(5) << j+1 << "CH3" << setw(7) << "CB" << setw(5) << ++meth_counter;
+                    outFile << setw(5) << j+1 << "CBX" << setw(7) << "CB" << setw(5) << ++meth_counter;
                     outFile << setw(8) << solutes[j][0];
                     outFile << setw(8) << solutes[j][1];
                     outFile << setw(8) << solutes[j][2];
