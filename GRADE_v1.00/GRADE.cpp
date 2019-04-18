@@ -525,8 +525,8 @@ int main(int argc, char* argv[])
             else {cout << "# 6¹5⁶ \t cup: " << count_62512_cups << "\n";}
             
             
-            vector<vector<int>> cage_512, cage_62512;
-            vector<vector<int>> cage_512_rings, cage_62512_rings;
+            vector<vector<int>> cage_512, cage_62512, cage_64512;
+            vector<vector<int>> cage_512_rings, cage_62512_rings, cage_64512_rings;
             
             int cage_512_count = 0;
             
@@ -554,8 +554,17 @@ int main(int argc, char* argv[])
                 //Write output gro file only if frameCounter is a multiple of DT. if -dt is not provided, every frame will be written.
                 if(cage_62512_count>0 && (frameCounter % DT) == 0)print_vmd_cage_frings(cup62512, cage_62512, cage_62512_count, cage_62512_rings, ring5, ring6, atom_Pos, time, rawFilename, box_size_xyz, solutes, methane_62512, solute1, topSolute, solute2, count_solute2, frameCounter);
             }
-            cout << "# 6²5¹²\tcage: " << cage_62512_count << "\n\n";
+            cout << "# 6²5¹²\tcage: " << cage_62512_count << "\n";
+            /**********************************************/
+            /*Finding Cage 64512*/
+            int cage_64512_count = 0;
             
+            cage_64512_count = cage_Finder_64512(cup62512, count_62512_cups);
+            
+            cout << "# 6⁴5¹²\tcage: " << cage_64512_count << "\n\n";
+
+            /**********************************************/
+
             outFile << cage_512_count << "\t" << methane_512 << "\t\t" << cage_62512_count << "\t\t" << methane_62512 << endl ;
 
             if(in_F4 == 1)      //If F4 flag is provided, calculate F4.

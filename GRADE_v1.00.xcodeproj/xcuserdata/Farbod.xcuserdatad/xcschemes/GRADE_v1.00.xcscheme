@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-i methanol.gro -f4 "
+            argument = "-i 1000000.gro -f4 "
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

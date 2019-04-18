@@ -59,6 +59,6 @@ void print_vmd_cage_frings(vector<vector<int>> cups, vector<vector<int>> cages, 
 
 double calc_F4(int count_solvent, int count_solute, vector<vector<int>>& My_neigh, vector<vector<double>>& atom_Pos, double& boxX, double& boxY, double& boxZ, vector<int>& Nneigh, int Natoms, int topSolute, string time, double HBOND_DIST );
 
-
+int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups);
 
 #endif /* MyFunctions_hpp */

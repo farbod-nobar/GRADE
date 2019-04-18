@@ -1847,8 +1847,6 @@ void print_vmd_cage_frings(vector<vector<int>> cups, vector<vector<int>> cages, 
     }
     }
 // New Function--------------------------------------------------------------------------------------
-// New Function--------------------------------------------------------------------------------------
-
 
 double calc_F4(int count_solvent, int count_solute, vector<vector<int>>& My_neigh, vector<vector<double>>& atom_Pos, double& boxX, double& boxY, double& boxZ, vector<int>& Nneigh, int Natoms, int topSolute, string time, double HBOND_DIST ){
     
@@ -2045,3 +2043,59 @@ double calc_F4(int count_solvent, int count_solute, vector<vector<int>>& My_neig
     return phi_avg/count_solvent;
 }
 
+// New Function--------------------------------------------------------------------------------------
+
+int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups)
+{
+    int count_cage_64512 = 0;
+    int N = 0;      //counter for number of shared lateral rings between any two cups.
+    vector<vector<int>> cage_64512;
+    cage_64512.clear();
+    vector<int> temp;
+    temp.clear();
+    
+    
+    for (int i = 0 ; i < count_62512_cups - 1 ; i++)
+    {
+        for (int j = i+1 ; j < count_62512_cups ; j++)
+        {
+            for (int k = 1 ; k < 7 ; k++)
+            {
+                for (int l = 1 ; l < 7 ; l++)
+                {
+                    if (cup62512[i][k] == cup62512[j][l])
+                    {
+                        N++;
+                        if( N >= 2 )
+                        {
+                                temp.push_back(j);
+                        }
+                    }
+                }
+            }
+            N = 0;
+        }
+        if(temp.size() == 3)
+        {
+            cage_64512.push_back(temp);
+            count_cage_64512++;
+        }
+        temp.clear();
+    }
+    
+   /*To print 4 cups that form a 64512 cage uncomment this part.*/
+//    for (int i = 0 ; i < cage_64512.size() ; i++)
+//    {
+//        if(cage_64512[i].size() >= 3 )
+//        {
+//            cout << "cup " << i << "  neighbors: " ;
+//            for (int j = 0 ; j < cage_64512[i].size() ; j++) {cout << cage_64512[i][j] << " ";}
+//            cout  << "\n";
+//        }
+//    }
+    
+    
+    
+    
+    return count_cage_64512;
+}
