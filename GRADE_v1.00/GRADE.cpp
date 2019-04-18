@@ -278,8 +278,8 @@ int main(int argc, char* argv[])
     
     //Create the header for outputfile.
     outFile.open(outputFilename, ofstream::app);
-    outFile << "#Frame/Time(ps)\t\tcage\tfilled_cage\tcage\t\tfilled_cage" << endl ;
-    outFile << "#\t\t\t5¹²\t5¹²\t\t6²5¹²\t\t6²5¹²" << endl ;
+    outFile << "#Frame/Time(ps)\t\tcage\tfilled_cage\tcage\tfilled_cage\tcage" << endl ;
+    outFile << "#\t\t\t5¹²\t5¹²\t\t6²5¹²\t6²5¹²\t\t6⁴5¹²" << endl ;
     outFile << "#" << endl;
     
     ifstream fileIN;
@@ -565,7 +565,7 @@ int main(int argc, char* argv[])
 
             /**********************************************/
 
-            outFile << cage_512_count << "\t" << methane_512 << "\t\t" << cage_62512_count << "\t\t" << methane_62512 << endl ;
+            outFile << cage_512_count << "\t" << methane_512 << "\t\t" << cage_62512_count << "\t" << methane_62512 << "\t\t" << cage_64512_count << endl ;
 
             if(in_F4 == 1)      //If F4 flag is provided, calculate F4.
             {
