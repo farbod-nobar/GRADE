@@ -1460,7 +1460,7 @@ int cage_Finder(vector<vector<int>> cups, unsigned long count_cups, vector<vecto
 // New Function--------------------------------------------------------------------------------------
 // New Function--------------------------------------------------------------------------------------
 
-void print_vmd_cage_frings(vector<vector<int>> cups, vector<vector<int>> cages, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter)
+void print_vmd_cage_frings(vector<vector<int>> cups, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter)
 
 {
     
