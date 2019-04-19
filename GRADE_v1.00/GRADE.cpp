@@ -142,83 +142,12 @@ int main(int argc, char* argv[])
     if(inputFilename.empty())
     {
         cout << "**No Input Provided!**" << "\n\n";
-        
-        cout << "GRADE is written by:\n" ;
-        cout << "Farbod Mahmoudinobar and Cristiano L. Dias\n\n" ;
-        cout << "© Copyright 2018, New Jersey Institute of Technology, USA.\n\n" ;
-        cout << "GRADE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n" ;
-        
-        cout << "Usage:\n" << "GRADE\t" << "[-i [<.gro>]] [-theta <int>] [-r <real>] [-d1 <real>] [-d2 <real>]\n" ;
-        cout << "\t\t[-o [<.gro/.xvg>]] [-dt <int>] [-fr <int>] [-[no]f4] [-s1 <string>]\n" ;
-        cout << "\t\t[-s2 <string>]\n" ;
-        
-        cout << "\nDESCRIPTION\n";
-        cout <<
-        "GRADE identifies cages in clathrate hydrate structures given the atomic coordinates\n"
-        "of oxygen atoms of water molecules. It finds the solute molecules trapped inside\n"
-        "cages and computes the four-body order parameter F4 commonly used to identify different\n"
-        "phases of water.\n";
-        
-        cout << "\nOPTIONS\n";
-        cout << "\nOptions to specify input files:\n" ;
-
-        cout << " -i\t[<.gro>]\t(input)\n\tTrajectory in gro format\n" ;
-        cout << "-theta\t<int>\t(45)\t(degree)\n\tAngle cut-off for planarity constraint\n" ;
-        cout << "-r\t<real>\t(0.35)\t(nm)\n\tHydrogen bond cutoff radius (nm, Oxygen-Oxygen)\n" ;
-        cout << "-d1\t<real>\t(0.18)\t(nm)\n\tMinimum length of Pentagon diameter\n";
-        cout << "-d2\t<real>\t(0.26)\t(nm)\n\tMinimum length of Hexagon diameter\n";
-        
-        cout << "\nOptions to specify output files:\n";
-        cout << "-o\t[<.gro/.xvg>]\t(output)\t(Opt.)\n\t(~_cage512.gro,~_cage62512.gro,~.xvg)\n";
-        cout << "-dt\t<int>\t(1)\t(Opt.)\n\tRead all input file, write output gro files every dt frame\n";
-        cout << "-fr\t<int>\t(1)\t(Opt.)\n\tRead input file every fr frame\n";
-        cout << "-[no]f4\t(yes)\t(F4.xvg)\n\tCompute four-body order parameter F4=< cos3𝝓 >\n" ;
-        cout << "-s1\t<string>\t(Opt.)\n\tSet the name of first solute molecules in the input file.\n";
-        cout << "-s2\t<string>\t(Opt.)\n\tSet the name of second solute molecules in the input file.\n";
-
-        cout << "\n" ;
-        
+        print_usage();
         cout << "**No Input Provided!**" << "\n\n";
-
         return 0 ;
     }
-    else
-    {
-        cout << "GRADE is written by:\n" ;
-        cout << "Farbod Mahmoudinobar and Cristiano L. Dias\n\n" ;
-        cout << "© Copyright 2018, New Jersey Institute of Technology, USA.\n\n" ;
-        cout << "GRADE is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n" ;
-        
-        cout << "Usage:\n" << "GRADE\t" << "[-i [<.gro>]] [-theta <int>] [-r <real>] [-d1 <real>] [-d2 <real>]\n" ;
-        cout << "\t\t[-o [<.gro/.xvg>]] [-dt <int>] [-fr <int>] [-[no]f4] [-s1 <string>]\n" ;
-        cout << "\t\t[-s2 <string>]\n" ;
-        
-        cout << "\nDESCRIPTION\n";
-        cout <<
-        "GRADE identifies cages in clathrate hydrate structures given the atomic coordinates\n"
-        "of oxygen atoms of water molecules. It finds the solute molecules trapped inside\n"
-        "cages and computes the four-body order parameter F4 commonly used to identify different\n"
-        "phases of water.\n";
-        
-        cout << "\nOPTIONS\n";
-        cout << "\nOptions to specify input files:\n" ;
-
-        cout << " -i\t[<.gro>]\t(input)\n\tTrajectory in gro format\n" ;
-        cout << "-theta\t<int>\t(45)\t(degree)\n\tAngle cut-off for planarity constraint\n" ;
-        cout << "-r\t<real>\t(0.35)\t(nm)\n\tHydrogen bond cutoff radius (nm, Oxygen-Oxygen)\n" ;
-        cout << "-d1\t<real>\t(0.18)\t(nm)\n\tMinimum length of Pentagon diameter\n";
-        cout << "-d2\t<real>\t(0.26)\t(nm)\n\tMinimum length of Hexagon diameter\n";
-        
-        cout << "\nOptions to specify output files:\n";
-        cout << "-o\t[<.gro/.xvg>]\t(output)\t(Opt.)\n\t(~_cage512.gro,~_cage62512.gro,~.xvg)\n";
-        cout << "-dt\t<int>\t(1)\t(Opt.)\n\tRead all input file, write output gro files every dt frame\n";
-        cout << "-fr\t<int>\t(1)\t(Opt.)\n\tRead input file every fr frame\n";
-        cout << "-[no]f4\t(yes)\t(F4.xvg)\n\tCompute four-body order parameter F4=< cos3𝝓 >\n" ;
-        cout << "-s1\t<string>\t(Opt.)\n\tSet the name of first solute molecules in the input file.\n";
-        cout << "-s2\t<string>\t(Opt.)\n\tSet the name of second solute molecules in the input file.\n";
-        
-        cout << "\n" ;
-    }
+    else{print_usage();}
+    
     if (outputFilename.empty())
     {
         outputFilename = inputFilename;

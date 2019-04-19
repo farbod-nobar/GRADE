@@ -63,4 +63,6 @@ int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups, vector
 
 void print_vmd_cage64512_frings(vector<vector<int>> cups, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter);
 
+void print_usage();
+
 #endif /* MyFunctions_hpp */
