@@ -2045,18 +2045,24 @@ double calc_F4(int count_solvent, int count_solute, vector<vector<int>>& My_neig
 
 // New Function--------------------------------------------------------------------------------------
 
-int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups)
+int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups, vector<vector<int>>& cage_64512_rings)
 {
+    //cage_64512_rings:   This parameter holds the index of rings which make the 64512 cage in the following way:
+    /*Each 64512 cage has 4 cups of 6156. So each cage will have 4 6-rings + 4*6 5-rings in total. These rings are written in cage_64512_rings this way: index 0,1,2,3 hold base rings which are hexagons and index 4-27 hold lateral rings which are pentagons. */
+    
     int count_cage_64512 = 0;
     int N = 0;      //counter for number of shared lateral rings between any two cups.
-    vector<vector<int>> cage_64512;
+    vector<vector<int>> cage_64512;     //cage_64512 holds the index of 62512 (or 6156) cups which make the 64512 cage.
     cage_64512.clear();
-    vector<int> temp;
+    int p;      //This holds the index of the 62512 cups. It is for simplicity of the code only.
+    vector<int> temp,temp2;
     temp.clear();
     
     
     for (int i = 0 ; i < count_62512_cups - 1 ; i++)
     {
+        temp.push_back(i);
+        
         for (int j = i+1 ; j < count_62512_cups ; j++)
         {
             for (int k = 1 ; k < 7 ; k++)
@@ -2066,16 +2072,13 @@ int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups)
                     if (cup62512[i][k] == cup62512[j][l])
                     {
                         N++;
-                        if( N >= 2 )
-                        {
-                                temp.push_back(j);
-                        }
+                        if( N >= 2 ){temp.push_back(j);}
                     }
                 }
             }
             N = 0;
         }
-        if(temp.size() == 3)
+        if(temp.size() == 4)
         {
             cage_64512.push_back(temp);
             count_cage_64512++;
@@ -2095,7 +2098,483 @@ int cage_Finder_64512(vector<vector<int>> cup62512, int count_62512_cups)
 //    }
     
     
+    for (int i = 0 ; i < count_cage_64512 ; i++)
+    {
+        for (int j = 0 ; j < 4 ; j++ )
+        {
+            p = cage_64512[i][j];               //p is for simplicity of code (re-naming basically).
+            temp.push_back(cup62512[p][0]);     //here temp holds the index of base rings (hexagons) of each of the four, 62512 cups.
+        }
+        for (int j = 0 ; j < 4 ; j++)           //this loops gets the pentagons of the four cups of cage_64512 into cage_64512_rings.
+        {
+            p = cage_64512[i][j];
+            for(int k=1;k<=6;k++){temp.push_back(cup62512[p][k]);}
+        }
+        cage_64512_rings.push_back(temp);       //this line puts the 24 lateral rings of the 4 cups in cage_64512_rings to fill indices 4-27.
+        temp.clear();
+    }
+    
     
     
     return count_cage_64512;
 }
+
+
+
+
+// New Function--------------------------------------------------------------------------------------
+
+void print_vmd_cage64512_frings(vector<vector<int>> cups, int cage_count, vector<vector<int>> cage_rings, vector<vector<int>> ring5, vector<vector<int>> ring6, vector<vector<double>> atom_Pos, string time, string rawFilename , string box_size_xyz, vector<vector<double>> solutes, size_t & meth_counter, string solute1, int topSolute, string solute2, int count_solute2, int frameCounter)
+
+{
+    
+    unsigned long int N_rings = 0;      //Number of rings in a cage. cage 512 has 12, cage 62512 has 14 and cage 64512 has 28.
+    if(cage_rings.size() != 0){N_rings = cage_rings[0].size();}
+    
+    unsigned long int N_cage = cage_count;        //This is the number of cages after removing the duplicates. This should be the correct number to use, however, using it will reduce the number of cages printed in gro file output. Something is not right here!
+    int atoms=0;
+    int p;       //"i" is cup number. "p" is ring number.
+    int ring_size;
+    int atom_counter=1;        //"atom_counter" is a counter for atom number in gro file. It should reset to one for each frame.
+    int sol_counter=1;         //counter for number of SOL in each frame.
+    meth_counter=0;      //counter for number of Methanes/Methanol inside cages.
+    unsigned long int tot_atoms=0;            // total number of atoms in gro file.
+    string out6, out5, out, out64512;
+    set<int> atoms_set;
+    //Different name for different cage types are written out based on the cage type recognized from N_cup_col.
+    
+    long double cage_sum_x=0, cage_sum_y=0, cage_sum_z=0;
+    long double cage_com_x=0, cage_com_y=0, cage_com_z=0;
+    int oxygen_counter=0;
+    vector<vector<long double>> all_cages_com;
+    vector<long double> current_cage_com;
+    vector<long double> temp_cage_com;
+    double dx, dy, dz, boxX, boxY, boxZ, dist;
+    
+    out5 = rawFilename + "_cage512-temp.gro";
+    out6 = rawFilename + "_cage62512-temp.gro";
+    out64512 = rawFilename + "_cage64512-temp.gro";
+    
+    istringstream streamB(box_size_xyz);
+    streamB >> boxX >> boxY >> boxZ ;
+    
+    if(N_rings == 28)
+    {
+        tot_atoms = 1;                     //This is a temporary number assigned to tot_atoms. it will be corrected later.
+        out =  out64512;
+    }
+    else if(N_rings == 14){
+        tot_atoms = N_cage * 24 * 4 ;    //each 62512 cage has 24 water molecule. TIP4P has 4 atoms per molecule.
+                                         //This number is not neccesarily correct, e.x., if cages share a ring with each other(That's why
+                                         //the re-writting of output file corrects it at the end).
+        out = out6;
+    }
+    else if (N_rings == 12){
+        tot_atoms = N_cage * 20 * 4 ;    //each 512 cage has 20 water molecule. TIP4P has 4 atoms per molecule.
+                                         //This number is not neccesarily correct, e.x.,if cages share a ring with each other(That's why
+                                         //the re-writting of output file corrects it at the end).
+        out = out5;
+    }
+    
+    std::ofstream outFile (out, std::ofstream::app);     //Open file and append to it.
+    outFile.setf(ios::fixed, ios::floatfield);           //Make output numbers look neat
+    outFile << "Generated by GROMACS : t= " << time << "\n";      //First line of gro file, comment and frame time.
+    outFile << tot_atoms << "\n";
+    
+    for(int l = 0 ; l < N_cage ; l++)       //Loop over all the cages.
+    {
+        
+        current_cage_com.clear();
+        for(int m = 0 ; m < N_rings; m++)         //Loop over 6 or 7 rings of each cage.
+        {
+            p = cage_rings[l][m];
+            {
+                /************************/
+                if( N_rings == 28 && m <=3  )  //This part is for base ring of 6(2)5(12) cups which are 6-ring are indexed 0,1,2,3.
+                {
+                    ring_size = 6;
+                    for (int q = 0 ; q < ring_size ; q++)       //Loop over all atoms of a ring.
+                    {
+                        atoms = ring6[p][q];
+                        if(!atoms_set.count(atoms))
+                        {                               //If atoms is not present in atoms_set, count will be zero, condition is one and
+                                                        //the rest of this block will be executed.
+                                                        //If atoms already exists in the set, it will not print out.
+                            atoms_set.insert(atoms);
+                            
+                            outFile << setprecision(3);
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "OW" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms][0];
+                            outFile << setw(8) << atom_Pos[atoms][1];
+                            outFile << setw(8) << atom_Pos[atoms][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "HW1" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+1][0];
+                            outFile << setw(8) << atom_Pos[atoms+1][1];
+                            outFile << setw(8) << atom_Pos[atoms+1][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "HW2" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+2][0];
+                            outFile << setw(8) << atom_Pos[atoms+2][1];
+                            outFile << setw(8) << atom_Pos[atoms+2][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "MW" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+3][0];
+                            outFile << setw(8) << atom_Pos[atoms+3][1];
+                            outFile << setw(8) << atom_Pos[atoms+3][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            sol_counter++;
+                            
+                        }
+                    }
+                }
+                /************************/
+                else if( (N_rings == 14 && m == 0) || (N_rings == 14 && m == 7) )  //This part is for base ring of 6(2)5(12) cages which is a 6-ring.
+                {
+                    ring_size = 6;
+                    for (int q = 0 ; q < ring_size ; q++)       //Loop over all atoms of a ring.
+                    {
+                        atoms = ring6[p][q];
+                        if(!atoms_set.count(atoms))
+                        {                               //If atoms is not present in atoms_set, count will be zero, condition is one and
+                                                        //the rest of this block will be executed.
+                                                        //If atoms already exists in the set, it will not print out.
+                            atoms_set.insert(atoms);
+                            
+                            outFile << setprecision(3);
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "OW" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms][0];
+                            outFile << setw(8) << atom_Pos[atoms][1];
+                            outFile << setw(8) << atom_Pos[atoms][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "HW1" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+1][0];
+                            outFile << setw(8) << atom_Pos[atoms+1][1];
+                            outFile << setw(8) << atom_Pos[atoms+1][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "HW2" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+2][0];
+                            outFile << setw(8) << atom_Pos[atoms+2][1];
+                            outFile << setw(8) << atom_Pos[atoms+2][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "MW" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+3][0];
+                            outFile << setw(8) << atom_Pos[atoms+3][1];
+                            outFile << setw(8) << atom_Pos[atoms+3][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            sol_counter++;
+                            
+                        }
+                    }
+                }
+                else            //This part is for all the rings of 5(12) or lateral rings in 62512 or 64512 cages which are all 5-rings.
+                {
+                    ring_size = 5;
+                    for (int q = 0 ; q < ring_size ; q++)       //Loop over all atoms of a ring.
+                    {
+                        atoms = ring5[p][q];
+                        if(!atoms_set.count(atoms))
+                        {                               //If atoms is not present in atoms_set, count will be zero, condition is one and
+                                                        //the rest of this block will be executed.
+                                                        //If atoms already exists in the set, it will not print out.
+                            
+                            atoms_set.insert(atoms);
+                            
+                            outFile << setprecision(3);
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "OW" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms][0];
+                            outFile << setw(8) << atom_Pos[atoms][1];
+                            outFile << setw(8) << atom_Pos[atoms][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "HW1" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+1][0];
+                            outFile << setw(8) << atom_Pos[atoms+1][1];
+                            outFile << setw(8) << atom_Pos[atoms+1][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "HW2" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+2][0];
+                            outFile << setw(8) << atom_Pos[atoms+2][1];
+                            outFile << setw(8) << atom_Pos[atoms+2][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            outFile << setw(5) << sol_counter << "SOL" << setw(7) << "MW" << setw(5) << atom_counter;
+                            outFile << setw(8) << atom_Pos[atoms+3][0];
+                            outFile << setw(8) << atom_Pos[atoms+3][1];
+                            outFile << setw(8) << atom_Pos[atoms+3][2];
+                            outFile << "\n";
+                            atom_counter++;
+                            
+                            sol_counter++;
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+    //Find methanes closeest to Center of Mass of each cage and write them to -temp.gro file output.
+    
+    //---------------------------------------------------------------------------------------------------------
+    
+    oxygen_counter=1;
+    cage_sum_x=0;
+    cage_sum_y=0;
+    cage_sum_z=0;
+    temp_cage_com.clear();
+    current_cage_com.clear();
+    
+    for(int l = 0 ; l < N_cage ; l++)       //Loop over all the cages.
+    {
+        current_cage_com.clear();
+        for(int m = 0 ; m < N_rings; m++)         //Loop over all rings of each cage.(12 or 14 or 28)
+        {
+            
+            p = cage_rings[l][m];
+            
+            {
+                if( N_rings == 28 && m <= 3 ) //This part is for base ring of 6(2)5(12) or 6(4)5(12) cages which is a 6-ring.
+                {
+                    ring_size = 6;
+                    for (int q = 0 ; q < ring_size ; q++)       //Loop over all atoms of a ring.
+                    {
+                        atoms = ring6[p][q];
+                        
+                        oxygen_counter++;
+                        cage_sum_x += atom_Pos[atoms][0];       //Find sum of x coordinate of all "O" atoms, for COM calcultaion.
+                        cage_sum_y += atom_Pos[atoms][1];       //find sum of y coordinate of all "O" atoms, for COM calcultaion.
+                        cage_sum_z += atom_Pos[atoms][2];       //Find sum of z coordinate of all "O" atoms, for COM calcultaion.
+                        
+                    }
+                }
+                else if( (N_rings == 14 && m == 0) || (N_rings == 14 && m == 7) ) //This part is for base ring of 6(2)5(12) cages which is a 6-ring.
+                {
+                    ring_size = 6;
+                    for (int q = 0 ; q < ring_size ; q++)       //Loop over all atoms of a ring.
+                    {
+                        atoms = ring6[p][q];
+                        
+                        oxygen_counter++;
+                        cage_sum_x += atom_Pos[atoms][0];       //Find sum of x coordinate of all "O" atoms, for COM calcultaion.
+                        cage_sum_y += atom_Pos[atoms][1];       //find sum of y coordinate of all "O" atoms, for COM calcultaion.
+                        cage_sum_z += atom_Pos[atoms][2];       //Find sum of z coordinate of all "O" atoms, for COM calcultaion.
+                        
+                    }
+                }
+                else            //This part is for all the rings of 5(12) cages which are all 5-rings.
+                {
+                    ring_size = 5;
+                    for (int q = 0 ; q < ring_size ; q++)       //Loop over all atoms of a ring.
+                    {
+                        atoms = ring5[p][q];
+                        
+                        
+                        oxygen_counter++;
+                        cage_sum_x += atom_Pos[atoms][0];       //Find sum of x coordinate of all "O" atoms, for COM calcultaion.
+                        cage_sum_y += atom_Pos[atoms][1];       //find sum of y coordinate of all "O" atoms, for COM calcultaion.
+                        cage_sum_z += atom_Pos[atoms][2];       //Find sum of z coordinate of all "O" atoms, for COM calcultaion.
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        cage_com_x = cage_sum_x / oxygen_counter;
+        cage_com_y = cage_sum_y / oxygen_counter;
+        cage_com_z = cage_sum_z / oxygen_counter;
+        
+        current_cage_com.push_back(cage_com_x);
+        current_cage_com.push_back(cage_com_y);
+        current_cage_com.push_back(cage_com_z);
+        
+        
+        if(temp_cage_com != current_cage_com)
+        {
+            temp_cage_com.clear();
+            all_cages_com.push_back(current_cage_com);
+            temp_cage_com= current_cage_com;
+            
+            current_cage_com.clear();
+        }
+        cage_sum_x=0;
+        cage_sum_y=0;
+        cage_sum_z=0;
+        oxygen_counter=0;
+        
+    }
+    
+    //---------------------------------------------------------------------------------------------------------
+    //***********************************************************************************************************
+    //This part removes the duplicates from all_cages_com variable.
+    
+    unsigned long int old_size = all_cages_com.size();              //Number of cups before removing the duplicates.
+    int count=0;                                                   //Number of com.
+    vector<double> current;                                        //Cup which is being read and compared at each loop.
+    map<vector<double>,int> mymap;                                 //A map which counts the frequencty of each com( [com,frequency] )
+    int prev = 0 ;
+    
+    for (int i = 0 ; i < old_size ; i++)      //Loop over all the com.
+    {
+        // number "3" in next loop over "j" is for x,y,z coordinates of com.
+        for(int j = 0 ; j < 3 ; j++){current.push_back(all_cages_com[i][j]);}      //Loop to put the read COM into "current".
+                                                                                   //sort(current.begin(), current.end());
+        if(!mymap[current])                  //For each read com, check if it exists in the map. If it does NOT, write it in the map.
+            
+        {
+            mymap[current] = 1;
+            count++;
+            for (int k = 0 ; k < 3 ; k++)
+            {
+                all_cages_com[prev][k] = all_cages_com[i][k];   //If the com does not exist in map, write it to first line of original com variable.
+            }
+            prev++;
+        }
+        else {mymap[current]++;}        //If the com already exists in the map, jump the writing step and add one to frequencty of that com.
+        current.clear();
+    }
+    //*_*_*_*_*_*_*_*_*_*_*_*_*_
+    /*Write all the solutes ( solute1 and solute2 ) at the end of the gro file. This part is added in v1.16. */
+    size_t solutes_size = solutes.size();
+    int s1 = 7, s2 = 7;
+    int meth_counter2=0;
+    for(int i = 1 ; i <= solute1.size(); ++i){s1 = 10 - i;}
+    for(int i = 1 ; i <= solute2.size(); ++i){s2 = 10 - i;}
+    
+    
+    for (int i = 0 ; i < solutes_size ; i++)
+    {
+        if(i < topSolute )
+        {
+            
+            outFile << setprecision(3);
+            outFile << setw(5) << i+1 << solute1  << setw(s1) << "CB" << setw(5) << ++meth_counter2;
+            outFile << setw(8) << solutes[i][0];
+            outFile << setw(8) << solutes[i][1];
+            outFile << setw(8) << solutes[i][2];
+            outFile << "\n";
+            atom_counter++;
+        }
+        if(i >= topSolute)
+        {
+            outFile << setprecision(3);
+            outFile << setw(5) << i+1 << solute2  << setw(s2) << "CB" << setw(5) << ++meth_counter2;
+            outFile << setw(8) << solutes[i][0];
+            outFile << setw(8) << solutes[i][1];
+            outFile << setw(8) << solutes[i][2];
+            outFile << "\n";
+            atom_counter++;
+        }
+    }
+    //*_*_*_*_*_*_*_*_*_*_*_*_*_
+    
+    //Write Methane molecules inside cages to the -temp.gro file.
+    //Find methanes closeest to Center of Mass of each cage and write them to -temp.gro file output.
+    vector<int> temp_meth_number_holder;
+    temp_meth_number_holder.clear();
+    
+    for ( int i = 0; i < count ; i++)        //Calculate distance between com of cages and each solute molecule.
+    {
+        for ( int j = 0 ; j < solutes.size() ; j++)
+        {
+            dx = solutes[j][0] - all_cages_com[i][0];
+            dy = solutes[j][1] - all_cages_com[i][1];
+            dz = solutes[j][2] - all_cages_com[i][2];
+            
+            if (abs(dx) >= boxX * 0.5){ dx = boxX - abs(dx) ;}
+            if (abs(dy) >= boxY * 0.5){ dy = boxY - abs(dy) ;}
+            if (abs(dz) >= boxZ * 0.5){ dz = boxZ - abs(dz) ;}
+            
+            dist = sqrt(dx*dx + dy*dy + dz*dz);
+            
+            if (dist <= 0.2)        //If distance between COM of cage and any Methane molecule is less than cut-off, append it to gro file.
+            {
+                
+                if(find(temp_meth_number_holder.begin(), temp_meth_number_holder.end(), j) == temp_meth_number_holder.end()) //If the value of "j" (methane index) does not exist in the temp_meth_number_holder, then add it to the vector and write its coordinates to gro file. Otherwise, do not write it in gro output file. The find(v.begin(),v.end(),"value") gives the iterator number of found value in the vector. If the value is not in the vector, iterator will be equal to v.end().
+                {
+                    temp_meth_number_holder.push_back(j);
+                    
+                    outFile << setprecision(3);
+                    outFile << setw(5) << j+1 << "CBX" << setw(7) << "CB" << setw(5) << ++meth_counter;
+                    outFile << setw(8) << solutes[j][0];
+                    outFile << setw(8) << solutes[j][1];
+                    outFile << setw(8) << solutes[j][2];
+                    outFile << "\n";
+                    atom_counter++;
+                }
+            }
+            
+        }
+    }
+    
+    outFile.close();
+    
+    
+    
+    //***********************************************************************************************************
+    //This part re-writes the output gro file to correct the number of atoms in the gro file. It will do that, only if N_cage > 0 .
+    if(N_cage>0)
+    {
+        string line;        // Reads each line.
+        string out_name, raw_filename;
+        int line_number = 0;
+        ofstream fout;
+        ifstream fin;
+        size_t found_ext = out.find_last_of("-");
+        string frame_number = std::to_string(frameCounter);
+        raw_filename = out.substr(0,found_ext);
+        out_name = raw_filename + "-" + frame_number + ".gro";
+        
+        
+        fout.open(out_name,ofstream::app);
+        fin.open(out);
+        //Error Check
+        if(fin.fail()){
+            cerr << "Error Reading temp file for re-writing with correct atom numbers in gro file" << "\n";
+            exit (1);}
+        while ( !fin.eof() )
+        {
+            getline(fin,line);
+            line_number++;
+            
+            if(line_number==2)fout << atom_counter-1 << "\n"  ;
+            
+            else if(!line.empty() )fout << line << "\n"  ;
+        }
+        
+        fout << box_size_xyz << "\n" ;
+        
+        fin.close();
+        fout.close();
+        
+        atom_counter = 0;        //reset atom number for each frame.(to be used in gro file output)
+        sol_counter = 0;         //reset SOL number for each frame.(to be used in gro file output)
+        
+        remove(out.c_str());
+        
+    }
+    }
