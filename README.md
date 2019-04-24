@@ -1,23 +1,20 @@
-# GRADE_v1.00
-A code to determine clathrate hydrate structures 
-GRADE analyzes atomic positions of oxygen atoms of water to compute the number of cages and account for their 
-three-dimensional structures. The latter can be used for visual inspection using software such as VMD (Visual 
-Molecular Dynamics). GRADE stands of “cages” in Portuguese. 
+---------------------------------------------------------------------------------------------------------------------
+GRADE 
+**version 1.00**
+GRADE analyzes atomic positions of oxygen atoms of water to compute the number of 512, 62512 and 64512cages and account for their three-dimensional structures. The latter can be used for visualization using software such as VMD (Visual Molecular Dynamics). GRADE stands of “cages” in Portuguese. F4 order parameter can also be calculated for trajectories.
 ---------------------------------------------------------------------------------------------------------------------
 Prerequisites: 
--GNU Compiler Collection
+-GNU Compiler Collection  version 6.1.0 or newer.
 ---------------------------------------------------------------------------------------------------------------------
 Compilation:
-GRADE is written in C++ and is made up of a main program file (GRADE.cpp) and two supporting 
-resource files (Functions.hpp and Functions.cpp). To compile type: 
-$ g++ GRADE.cpp Functions.cpp -o GRADE.out
+GRADE is written in C++ and is made up of a main program file (GRADE.cpp) and two supporting resource files (MyFunctions.hpp and MyFunctions.cpp). Use the Makefile to compile GRADE by typing: 
+$ make
+$ make clean
 ---------------------------------------------------------------------------------------------------------------------
 Usage: 
 If the gro file containing atomic positions of water molecules is named “test.gro”, to run type: 
-$ ./GRADE.out -i test.gro 
-This will generate following files by default: 
-test.xvg (always), test_cage512_frame.gro (if 512 cages exist), test_cage62512_frame.gro (if 62512 cages exist). 
-*A separate gro file is generated for each time-frame of the test.gro. 
+$ ./GRADE -i test.gro 
+This will generate following files by default (if at least one cage is found in test.gro): test.xvg, test_cage512-frame.gro, test_cage62512-frame.gro (if 62512 cages exist). A separate gro file is generated for each time-frame of the test.gro. 
 ---------------------------------------------------------------------------------------------------------------------
 Options:
 Full list of options can be printed on terminal by using flag ‘-h’. These options as of version 1.00 are:
@@ -40,6 +37,7 @@ Full list of options can be printed on terminal by using flag ‘-h’. These op
 -[no]f4 	(yes)
 	Compute four-body order parameter F4=<cos3ф>
 
+
 ---------------------------------------------------------------------------------------------------------------------
 
 Authors: 
@@ -47,7 +45,6 @@ Farbod Mahmoudinobar, fm59@njit.edu
 Cristiano L. Dias, cld@njit.edu
 ---------------------------------------------------------------------------------------------------------------------
 License & Copyright:
-© Farbod Mahmoudinobar, New Jersey Institute of Technology, Physics
 © Cristiano L. Dias, New Jersey Institute of Technology, Physics
 Licensed under the GNU GPL-3.0-or-later
 
