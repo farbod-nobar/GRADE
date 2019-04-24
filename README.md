@@ -1,20 +1,32 @@
 ---------------------------------------------------------------------------------------------------------------------
 GRADE 
+
 **version 1.00** 
+
 GRADE analyzes atomic positions of oxygen atoms of water to compute the number of 512, 62512 and 64512cages and account for their three-dimensional structures. The latter can be used for visualization using software such as VMD (Visual Molecular Dynamics). GRADE stands of “cages” in Portuguese. F4 order parameter can also be calculated for trajectories.
 ---------------------------------------------------------------------------------------------------------------------
 Prerequisites: 
+
 -GNU Compiler Collection  version 6.1.0 or newer.
 ---------------------------------------------------------------------------------------------------------------------
+
 Compilation:
+
 GRADE is written in C++ and is made up of a main program file (GRADE.cpp) and two supporting resource files (MyFunctions.hpp and MyFunctions.cpp). Use the Makefile to compile GRADE by typing: 
+
 $ make
+
 $ make clean
 ---------------------------------------------------------------------------------------------------------------------
 Usage: 
+
 If the gro file containing atomic positions of water molecules is named “test.gro”, to run type: 
+
 $ ./GRADE -i test.gro 
-This will generate following files by default (if at least one cage is found in test.gro): test.xvg, test_cage512-frame.gro, test_cage62512-frame.gro (if 62512 cages exist). A separate gro file is generated for each time-frame of the test.gro. 
+
+This will generate following files by default (if at least one cage is found in test.gro): test.xvg, test_cage512-frame.gro, test_cage62512-frame.gro (if 62512 cages exist). 
+
+A separate gro file is generated for each time-frame of the test.gro. 
 ---------------------------------------------------------------------------------------------------------------------
 Options:
 Full list of options can be printed on terminal by using flag ‘-h’. These options as of version 1.00 are:
