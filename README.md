@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------------------------
-GRADE \n
-**version 1.00** \n
+GRADE 
+**version 1.00** "\n"
 GRADE analyzes atomic positions of oxygen atoms of water to compute the number of 512, 62512 and 64512cages and account for their three-dimensional structures. The latter can be used for visualization using software such as VMD (Visual Molecular Dynamics). GRADE stands of “cages” in Portuguese. F4 order parameter can also be calculated for trajectories.
 ---------------------------------------------------------------------------------------------------------------------
 Prerequisites: 
