@@ -63,6 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
+            argument = "-o output/temp5-4p3 -i temp5-4p3.gro "
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

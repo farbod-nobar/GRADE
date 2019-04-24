@@ -2582,6 +2582,8 @@ void print_vmd_cage64512_frings(vector<vector<int>> cups, int cage_count, vector
 // New Function--------------------------------------------------------------------------------------
 void print_usage()
 {
+    cout << std::fixed ;
+    cout << std::setprecision(2);
     
     cout << "GRADE is written by:\n" ;
     cout << "(*)Farbod Mahmoudinobar and (**)Cristiano L. Dias\n" ;

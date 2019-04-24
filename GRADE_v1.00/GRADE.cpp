@@ -155,15 +155,15 @@ int main(int argc, char* argv[])
     
     cout << "Command line:\n" ;
     cout << argv[0] << " -i " << inputFilename << " -o " << outputFilename ;
-    if (in_dt == 1) {cout << " -dt " << DT ;}
-    if (in_fr == 1) {cout << " -fr " << FR ;}
+    if (in_dt == 1)  {cout << " -dt " << DT ;}
+    if (in_fr == 1)  {cout << " -fr " << FR ;}
     if (in_theta==1) {cout << " -theta " << THETA;}
-    if (in_r == 1) {cout << " -r " << HBOND_DIST ;}
-    if (in_F4 == 1) {cout << " -f4 " << "YES" ;}
-    if (in_d1 == 1) {cout << " -d1 " << delta_p ;}
-    if (in_d2 == 1) {cout << " -d2 " << delta_h ;}
-    if (in_s1 == 1) {cout << " -s1 " << s1 ;}
-    if (in_s2 == 1) {cout << " -s1 " << s2 ;}
+    if (in_r == 1)   {cout << " -r " << HBOND_DIST ;}
+    if (in_F4 == 1)  {cout << " -f4 " << "YES" ;}
+    if (in_d1 == 1)  {cout << " -d1 " << delta_p ;}
+    if (in_d2 == 1)  {cout << " -d2 " << delta_h ;}
+    if (in_s1 == 1)  {cout << " -s1 " << s1 ;}
+    if (in_s2 == 1)  {cout << " -s1 " << s2 ;}
     
     cout << "\n\n" ;
     //-------------------------------------------------------------------------------------
@@ -207,10 +207,10 @@ int main(int argc, char* argv[])
     
     //Create the header for outputfile.
     outFile.open(outputFilename, ofstream::app);
-    outFile << " ------------------------------------------------------------------------------------------------------- " << endl;
-    outFile << "|(Frame) Time(ps)\t\t|cage\t|filled_cage\t|cage\t|filled_cage\t|cage\t|filled_cage\t|" << endl ;
-    outFile << "|\t\t\t\t|5¹²\t|5¹²\t\t|6²5¹²\t|6²5¹²\t\t|6⁴5¹²\t|6⁴5¹²\t\t|" << endl ;
-    outFile << " ------------------------------------------------------------------------------------------------------- " << endl;
+    outFile << "# ------------------------------------------------------------------------------------------------------- " << endl;
+    outFile << "#|(Frame) Time(ps)\t\t|cage\t|filled_cage\t|cage\t|filled_cage\t|cage\t|filled_cage\t|" << endl ;
+    outFile << "#|\t\t\t\t|5¹²\t|5¹²\t\t|6²5¹²\t|6²5¹²\t\t|6⁴5¹²\t|6⁴5¹²\t\t|" << endl ;
+    outFile << "# ------------------------------------------------------------------------------------------------------- " << endl;
     
     ifstream fileIN;
     fileIN.open(inputFilename);
@@ -225,9 +225,9 @@ int main(int argc, char* argv[])
     {
         remove("F4.xvg");       //Remove any existing F4.xvg file and create a new one. 
         outFile_F4.open("F4.xvg", ofstream::app);
-        outFile_F4 << " --------------------------------------- \n" ;
-        outFile_F4 << "|Frame\t|F4\t\t|Time(ps)\t|" << endl;
-        outFile_F4 << " --------------------------------------- \n" ;
+        outFile_F4 << "# --------------------------------------- \n" ;
+        outFile_F4 << "#|Frame\t|F4\t\t|Time(ps)\t|" << endl;
+        outFile_F4 << "# --------------------------------------- \n" ;
 
     }
     
@@ -254,7 +254,7 @@ int main(int argc, char* argv[])
             if(found_time != string::npos)              //If found_time is not null, do the following.
             {
                 time = line.substr(found_time+3);
-                outFile << "(" << frameCounter << ") " << time << "\t\t| "  ;
+                outFile << "(" << frameCounter << "\t) " << time << "\t\t| "  ;
             }
             else outFile << frameCounter << "\t\t\t| " ;
             
