@@ -207,10 +207,10 @@ int main(int argc, char* argv[])
     
     //Create the header for outputfile.
     outFile.open(outputFilename, ofstream::app);
-    outFile << "# ------------------------------------------------------------------------------------------------------- " << endl;
+    outFile << "# ------------------------------------------------------------------------------------------------------ " << endl;
     outFile << "#|(Frame) Time(ps)\t\t|cage\t|filled_cage\t|cage\t|filled_cage\t|cage\t|filled_cage\t|" << endl ;
     outFile << "#|\t\t\t\t|5¹²\t|5¹²\t\t|6²5¹²\t|6²5¹²\t\t|6⁴5¹²\t|6⁴5¹²\t\t|" << endl ;
-    outFile << "# ------------------------------------------------------------------------------------------------------- " << endl;
+    outFile << "# ------------------------------------------------------------------------------------------------------ " << endl;
     
     ifstream fileIN;
     fileIN.open(inputFilename);
@@ -225,9 +225,9 @@ int main(int argc, char* argv[])
     {
         remove("F4.xvg");       //Remove any existing F4.xvg file and create a new one. 
         outFile_F4.open("F4.xvg", ofstream::app);
-        outFile_F4 << "# --------------------------------------- \n" ;
+        outFile_F4 << "# -------------------------------------- \n" ;
         outFile_F4 << "#|Frame\t|F4\t\t|Time(ps)\t|" << endl;
-        outFile_F4 << "# --------------------------------------- \n" ;
+        outFile_F4 << "# -------------------------------------- \n" ;
 
     }
     
@@ -254,9 +254,9 @@ int main(int argc, char* argv[])
             if(found_time != string::npos)              //If found_time is not null, do the following.
             {
                 time = line.substr(found_time+3);
-                outFile << "(" << frameCounter << "\t) " << time << "\t\t| "  ;
+                outFile << frameCounter << "\t " << time << "\t\t "  ;
             }
-            else outFile << frameCounter << "\t\t\t| " ;
+            else outFile << frameCounter << "\t\t\t " ;
             
             cout << " frame#: " << frameCounter << ", "  ;
             if(found_time != string::npos) cout << line.substr(found_time) << " ps\n" ;
@@ -500,13 +500,13 @@ int main(int argc, char* argv[])
             
             /**********************************************/
 
-            outFile << cage_512_count << "\t| " << methane_512 << "\t\t| " << cage_62512_count << "\t| " << methane_62512 << "\t\t| " << cage_64512_count << "\t| " << methane_64512 << endl ;
+            outFile << cage_512_count << "\t " << methane_512 << "\t\t " << cage_62512_count << "\t " << methane_62512 << "\t\t " << cage_64512_count << "\t " << methane_64512 << endl ;
 
             if(in_F4 == 1)      //If F4 flag is provided, calculate F4.
             {
                 F4_value = calc_F4(count_solvent, count_solute, My_neigh, atom_Pos, boxX, boxY, boxZ, Nneigh, Natoms, topSolute, time, HBOND_DIST) ;
-                if(F4_value > 0) outFile_F4 << frameCounter << "\t| " << F4_value << "\t| " << time << endl;
-                else outFile_F4 << frameCounter << "\t|" << F4_value << "\t| " << time << endl;        //The if-else condition takes care of the extra space needed for "-" sign and alligns the output(lazy way!).
+                if(F4_value > 0) outFile_F4 << frameCounter << "\t " << F4_value << "\t " << time << endl;
+                else outFile_F4 << frameCounter << "\t" << F4_value << "\t " << time << endl;        //The if-else condition takes care of the extra space needed for "-" sign and alligns the output(lazy way!).
                 
             }
             
