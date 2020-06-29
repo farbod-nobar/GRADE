@@ -6,7 +6,9 @@ GRADE
 GRADE analyzes atomic positions of oxygen atoms of water to compute the number of 5(12), 6(2)5(12) and 6(4)5(12) cages and account for their three-dimensional structures. The latter can be used for visualization using software such as VMD (Visual Molecular Dynamics). GRADE stands for “cages” in Portuguese. F4 order parameter can also be calculated for trajectories.
 
 If you have used this code, please cite the following publication:
+
 Mahmoudinobar, Farbod, and Cristiano L. Dias. "GRADE: A code to determine clathrate hydrate structures." Computer Physics Communications 244 (2019): 385-391.
+
 https://doi.org/10.1016/j.cpc.2019.06.004
 
 ---------------------------------------------------------------------------------------------------------------------
