@@ -94,6 +94,6 @@ Licensed under the GNU GPL-3.0-or-later
 
 ### Notes:
 - Grade is optimized to work with .gro files written by GROMACS. Trajectories converted from other MD packages may encounter issues with reading the data. 
-- Currently, Grade recognized 3-atom water models.
+- Currently, Grade recognizes 4-atom water models.
 
 
