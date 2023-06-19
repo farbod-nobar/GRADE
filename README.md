@@ -56,15 +56,18 @@ A separate gro file is generated for each time-frame of the test.gro.
 
 A full list of options can be printed on the terminal by using the flag `-h`. The available options as of version 1.00 are:
 
-- `-i <.gro>` (input): Trajectory in gro format
-- `-theta <int>` (45) (degree): Angle cut-off for planarity constraint
-- `-r <real>` (0.35) (nm): Hydrogen bond cutoff radius (nm, Oxygen-Oxygen distance)
-- `-d1 <real>` (0.18) (nm): Minimum length of Pentagon diameter
-- `-d2 <real>` (0.26) (nm): Minimum length of Hexagon diameter
-- `-o <.gro/.xvg>` (output) (Opt.): Output name to be used in ~.xvg, ~_cage512.gro, ~_cage62512.gro
-- `-dt <int>` (1) (Opt.): Read all input file, write output gro files every dt frame(s)
-- `-fr <int>` (1) (Opt.): Read input file every fr frame(s)
-- `-[no]f4` (yes): Compute four-body order parameter F4=<cos3ф>
+| Option             | Default Value | Description                                                      |
+|--------------------|---------------|------------------------------------------------------------------|
+| `-i <.gro>`        |  	         | Trajectory in gro format                             |
+| `-theta <int>`     | 45 (degree)	 | Angle cut-off for planarity constraint                 |
+| `-r <real>`        | 0.35 (nm)     | Hydrogen bond cutoff radius (nm, Oxygen-Oxygen distance)    |
+| `-d1 <real>`       | 0.18 (nm)     | Minimum length of Pentagon diameter                         |
+| `-d2 <real>`       | 0.26 (nm)     | Minimum length of Hexagon diameter                          |
+| `-o <.gro/.xvg>`   | 			     | Output name to be used as prefix in ~.xvg, ~_cage512.gro, ~_cage62512.gro files|
+| `-dt <int>`        | 1 (Opt.)      | Read all input file, write output gro files every dt frame(s) |
+| `-fr <int>`        | 1  (Opt.)     | Read input file every fr frame(s)                         |
+| `-[no]f4`          | yes           | Compute four-body order parameter F4=<cos3ф>. Use `-f4 no` to disable.                     |
+
 
 
 ## Authors
