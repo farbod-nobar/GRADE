@@ -16,13 +16,32 @@ Mahmoudinobar, Farbod, and Cristiano L. Dias. [*GRADE: A code to determine clath
 
 ---
 
+# Using Docker to run the code (recommended)
 
-# Prerequisites
-GNU Compiler Collection version 6.1.0 or newer.
+You can use the docker image of this code to skip compiling the c++ source code by first pulling the docker image from `dockerhub` and then run the code using the docker image. You can follow these steps:
 
-# Compilation
+1. Download and install [Docker](https://www.docker.com)
+
+2. Pull Grade's docker image from [Dockerhub](https://hub.docker.com/repository/docker/farbodnobar/grade/general):
+```.sh
+docker pull farbodnobar/grade:v1.0
+```
+3. Go to the directory where you store your input .gro files:
+```
+cd ~/YOUR_WORKING_DIR/
+```
+4. Find the `IMAGE ID` corresponding to Grade's docker image:
+```
+image_id=$(docker images -q farbodnobar/grade:v1.0)
+```
+5. Execute Grade through the docker image:
+```
+docker run --rm -v $PWD:/data -w /data $image_id grade -i test.gro 
+```
+The last command runs a Docker container using Grade's docker image, attaches it to your current working directory, and sets the container's working directory to `/data`. It runs the Grade code and after completion of the command, removes the container on exit. The output files of Grade will be written in your current working directory. 
+
+# Compiling from source code
 GRADE is written in C++ and is made up of a main program file [GRADE.cpp](./GRADE.cpp) and two supporting resource files [MyFunctions.hpp](./MyFunctions.hpp) and [MyFunctions.cpp](./MyFunctions.cpp). Use the provided [Makefile](./Makefile) to compile GRADE by typing:
-
 
 
 
@@ -40,7 +59,7 @@ $ make
 $ make clean
 ```
 
-# Usage: 
+## Usage: 
 
 If the gro file containing atomic positions of water molecules is named “test.gro”, to run the code with all default values: 
 
@@ -51,6 +70,8 @@ $ ./GRADE -i test.gro
 This will generate following files by default (if at least one cage is found in test.gro): test.xvg, test_cage512-frame.gro, test_cage62512-frame.gro (if 62512 cages exist).
 
 A separate gro file is generated for each time-frame of the test.gro.
+
+---
 
 # Options
 
@@ -73,7 +94,6 @@ A full list of options can be printed on the terminal by using the flag `-h`. Th
 ## Authors
 - Farbod Mahmoudinobar, [fm59@njit.edu](mailto:fm59@njit.edu), [farbodmahmoudi@gmail.com](mailto:farbodmahmoudi@gmail.com)
 
-## PI
 - Cristiano L. Dias, [cld@njit.edu](mailto:cld@njit.edu)
 
 ## License & Copyright
