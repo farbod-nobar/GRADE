@@ -1,8 +1,25 @@
 # GRADE 
 
 ![C++](https://img.shields.io/badge/Language-C%2B%2B-blue)
+![Docker](https://img.shields.io/badge/-Docker-2496ed?logo=docker&logoColor=white&style=flat)
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/farbodnobar/grade/v1.0)
+![License](https://img.shields.io/github/license/farbod-nobar/GRADE)
+![Static Badge](https://img.shields.io/badge/DOI-https%3A%2F%2Fdoi.org%2F10.1016%2Fj.cpc.2019.06.004-red)
 
-**version 1.00**
+
+**Table of Contents**
+- [GRADE](#grade)
+- [Description](#description)
+- [Using Docker to run the code (recommended)](#using-docker-to-run-the-code-recommended)
+- [Compiling from source code](#compiling-from-source-code)
+  - [Prerequisites:](#prerequisites)
+  - [Compilation:](#compilation)
+  - [Usage:](#usage)
+- [Options](#options)
+- [Authors](#authors)
+- [License &amp; Copyright](#license--copyright)
+- [Citation](#citation)
+  
 
 ## Description
 GRADE analyzes atomic positions of oxygen atoms of water to compute the number of $5^{12}$, $6^{2}5^{12}$, and $6^{4}5^{12}$ cages and account for their three-dimensional structures. The latter can be used for visualization using software such as VMD (Visual Molecular Dynamics). GRADE stands for "cages" in Portuguese. *`F4`* order parameter can also be calculated for trajectories.
@@ -18,7 +35,7 @@ Mahmoudinobar, Farbod, and Cristiano L. Dias. [*GRADE: A code to determine clath
 
 # Using Docker to run the code (recommended)
 
-You can use the docker image of this code to skip compiling the c++ source code by first pulling the docker image from `dockerhub` and then run the code using the docker image. You can follow these steps:
+You can use the docker image of this code to skip compiling the c++ source code by first pulling the docker image from `Dockerhub` and then run the code using the docker image. You can follow these steps:
 
 1. Download and install [Docker](https://www.docker.com)
 
@@ -91,12 +108,12 @@ A full list of options can be printed on the terminal by using the flag `-h`. Th
 
 
 
-## Authors
-- Farbod Mahmoudinobar, [fm59@njit.edu](mailto:fm59@njit.edu), [farbodmahmoudi@gmail.com](mailto:farbodmahmoudi@gmail.com)
+# Authors
+- Farbod Mahmoudinobar: [fm59@njit.edu](mailto:fm59@njit.edu), [farbodmahmoudi@gmail.com](mailto:farbodmahmoudi@gmail.com)
 
-- Cristiano L. Dias, [cld@njit.edu](mailto:cld@njit.edu)
+- Cristiano L. Dias: [cld@njit.edu](mailto:cld@njit.edu)
 
-## License & Copyright
+# License & Copyright
 - © Cristiano L. Dias, New Jersey Institute of Technology, Physics
 Licensed under the GNU GPL-3.0-or-later
 
@@ -114,7 +131,7 @@ Licensed under the GNU GPL-3.0-or-later
 - Currently, Grade recognizes 4-atom water models.
 
 ---
-## Citation
+# Citation
 ```
 @article{Nobar2019grade,
 	title={GRADE: A code to determine clathrate hydrate structures},
@@ -125,4 +142,5 @@ Licensed under the GNU GPL-3.0-or-later
 	year={2019},
 	doi={10.1016/j.cpc.2019.06.004},
 	publisher={Elsevier}
+}
 ```
