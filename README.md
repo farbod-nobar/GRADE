@@ -92,18 +92,14 @@ Licensed under the GNU GPL-3.0-or-later
 
 ---
 ## Citation
-<div style="position: relative;">
-  <button class="copy-button" onclick="copyCode(this)">Copy</button>
-  <pre><code>
-	@article{Nobar2019grade,
-		title={GRADE: A code to determine clathrate hydrate structures},
-		author={Mahmoudinobar, Farbod and Dias, Cristiano L.},
-		journal={Computer Physics Communications},
-		volume={244},
-		pages={385--391},
-		year={2019},
-		doi={10.1016/j.cpc.2019.06.004},
-		publisher={Elsevier}
-	}
-	</code></pre>
-</div>
+```
+@article{Nobar2019grade,
+	title={GRADE: A code to determine clathrate hydrate structures},
+	author={Mahmoudinobar, Farbod and Dias, Cristiano L.},
+	journal={Computer Physics Communications},
+	volume={244},
+	pages={385--391},
+	year={2019},
+	doi={10.1016/j.cpc.2019.06.004},
+	publisher={Elsevier}
+```
