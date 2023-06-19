@@ -107,21 +107,3 @@ Licensed under the GNU GPL-3.0-or-later
 	}
 	</code></pre>
 </div>
-
-<script>
-  function copyCode(button) {
-    var codeBlock = button.nextElementSibling;
-    var code = codeBlock.innerText;
-
-    navigator.clipboard.writeText(code)
-      .then(function() {
-        button.innerText = 'Copied!';
-        setTimeout(function() {
-          button.innerText = 'Copy';
-        }, 2000);
-      })
-      .catch(function(error) {
-        console.error('Copy failed:', error);
-      });
-  }
-</script>
